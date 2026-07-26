@@ -1,0 +1,12 @@
+# Ignore non-website files and temporary development assets
+/scratch/
+/images/
+*.docx
+*.txt
+Ido.md
+.gemini/
+
+# Root level raw images
+/P3 UI.png
+/P3公司.png
+/Gemini_Generated_Image_*.png

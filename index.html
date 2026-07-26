@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>可见光目标模拟器 | P³光电(PeterPan Photonics)</title>
+    <meta name="description" content="新一代可见光目标模拟器，P³光电(PeterPan Photonics)出品。">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Apple-like color palette */
+            --bg-color: #fbfbfd;
+            --surface-color: #ffffff;
+            --text-hero: #1d1d1f;
+            --text-main: #1d1d1f;
+            --text-secondary: #86868b;
+            --accent-color: #0066cc;
+            --border-color: rgba(0, 0, 0, 0.08);
+            
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+            --content-width: 1040px;
+            --radius-lg: 24px;
+            --shadow-subtle: 0 4px 24px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0,0,0,0.01);
+            --shadow-hover: 0 12px 48px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0,0,0,0.02);
+            --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* Subtle Mesh Gradient Background */
+        .bg-layer {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: -1;
+            background: 
+                radial-gradient(at 0% 0%, rgba(245, 245, 247, 1) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(235, 240, 255, 0.5) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(250, 245, 250, 0.6) 0px, transparent 50%);
+            background-color: var(--bg-color);
+        }
+
+        /* Nav */
+        nav {
+            position: fixed;
+            top: 0; width: 100%;
+            background-color: rgba(251, 251, 253, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+        }
+
+        .nav-content {
+            max-width: var(--content-width);
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-logo {
+            height: 32px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .nav-title {
+            font-weight: 600;
+            font-size: 15px;
+            letter-spacing: -0.01em;
+            color: var(--text-hero);
+        }
+
+        .nav-subtitle {
+            font-weight: 400;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-left: 8px;
+            padding-left: 8px;
+            border-left: 1px solid var(--border-color);
+        }
+
+        /* Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 140px 24px 80px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            background: rgba(0, 102, 204, 0.06);
+            color: var(--accent-color);
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: 64px;
+            font-weight: 700;
+            letter-spacing: -0.035em;
+            line-height: 1.05;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #1d1d1f 0%, #434345 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            max-width: 800px;
+        }
+
+        .hero p {
+            font-size: 24px;
+            font-weight: 400;
+            color: var(--text-secondary);
+            max-width: 680px;
+            line-height: 1.4;
+            margin-bottom: 40px;
+            letter-spacing: -0.015em;
+        }
+
+        .hero img {
+            width: 100%;
+            max-width: 800px;
+            margin-top: 40px;
+            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.1));
+            transition: var(--transition);
+        }
+
+        .hero img:hover {
+            transform: scale(1.02);
+            filter: drop-shadow(0 30px 60px rgba(0,0,0,0.15));
+        }
+
+        /* Main Container */
+        main {
+            max-width: var(--content-width);
+            margin: 0 auto;
+            padding: 0 24px 120px;
+            display: flex;
+            flex-direction: column;
+            gap: 100px;
+        }
+
+        /* Sections */
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: 40px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+        }
+
+        .section-header p {
+            font-size: 20px;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Cards Layout */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--surface-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-subtle);
+            padding: 48px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-4px);
+        }
+        
+        .card.dark {
+            background: #1d1d1f;
+            color: #ffffff;
+            border: none;
+        }
+        .card.dark h3 {
+            color: #ffffff;
+        }
+        .card.dark p, .card.dark .spec-label {
+            color: #a1a1a6;
+        }
+        .card.dark .spec-value {
+            color: #ffffff;
+        }
+        .card.dark .spec-item {
+            border-bottom-color: rgba(255,255,255,0.1);
+        }
+
+        .col-span-12 { grid-column: span 12; }
+        .col-span-8 { grid-column: span 8; }
+        .col-span-4 { grid-column: span 4; }
+        .col-span-6 { grid-column: span 6; }
+
+        .card h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: -0.01em;
+        }
+
+        .card p {
+            font-size: 17px;
+            color: var(--text-secondary);
+        }
+
+        .card-img-wrapper {
+            margin-top: 32px;
+            text-align: center;
+            width: 100%;
+        }
+
+        .card-img-wrapper img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+        }
+
+        /* Typography & Spec Table */
+        .spec-list {
+            list-style: none;
+            margin-top: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+        }
+
+        .spec-item:last-child { border-bottom: none; }
+
+        .spec-label {
+            font-size: 17px;
+            color: var(--text-secondary);
+        }
+
+        .spec-value {
+            font-size: 19px;
+            font-weight: 500;
+            color: var(--text-main);
+            text-align: right;
+            max-width: 60%;
+        }
+
+        /* Value proposition grids */
+        .value-prop-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        
+        .value-card {
+            background: var(--surface-color);
+            padding: 32px;
+            border-radius: 20px;
+            box-shadow: var(--shadow-subtle);
+        }
+        
+        .value-card h4 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-main);
+        }
+        
+        .value-card p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+        
+        .value-icon {
+            font-size: 32px;
+            margin-bottom: 16px;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 40px 24px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        .footer-logo {
+            height: 28px;
+            margin-bottom: 12px;
+            opacity: 0.85;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 42px; margin-bottom: 16px; }
+            .hero p { font-size: 19px; }
+            .hero { padding: 100px 20px 40px; }
+            
+            main { gap: 60px; padding-bottom: 60px; }
+            
+            .bento-grid, .value-prop-grid { display: flex; flex-direction: column; gap: 20px; }
+            
+            .card { padding: 32px 24px; }
+            
+            .section-header h2 { font-size: 32px; }
+            .section-header p { font-size: 17px; }
+            
+            .spec-item { flex-direction: column; align-items: flex-start; gap: 4px; }
+            .spec-value { text-align: left; max-width: 100%; }
+
+            .nav-subtitle { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-layer"></div>
+
+    <nav>
+        <div class="nav-content">
+            <div class="nav-brand">
+                <img src="assets/images/logo.png" alt="P³光电 Logo" class="nav-logo">
+                <span class="nav-title">P³光电 (PeterPan Photonics)</span>
+                <span class="nav-subtitle">可见光目标模拟器</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero reveal">
+        <div class="hero-badge">P³光电 (PeterPan Photonics) 旗舰方案</div>
+        <h1>真实视界，精准投射。</h1>
+        <p>探索工业级光电仿真的无限可能。凭借卓越的光学解析力与流畅的动态靶标生成，将外场昂贵的测试平移至桌面闭环。</p>
+        <img src="assets/images/simulator_real_pro.png" alt="可见光目标模拟器" loading="lazy">
+    </div>
+
+    <main>
+        <!-- Why Choose Us -->
+        <section class="reveal">
+            <div class="section-header">
+                <h2>重塑测试边界</h2>
+                <p>将不可控的自然环境，化为实验室里的精准光束。告别“外场看天吃饭”的窘境。</p>
+            </div>
+            
+            <div class="value-prop-grid">
+                <div class="value-card">
+                    <div class="value-icon">⏱️</div>
+                    <h4>极速降本增效</h4>
+                    <p>在实验室内即可实现全天候目标仿真，将漫长、昂贵的外场飞行/车载测试缩短至室内几小时解决。</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">🛡️</div>
+                    <h4>绝对零风险</h4>
+                    <p>封闭环境下的闭环硬件在环（HIL）验证，杜绝因全新未验证算法在外场暴走而导致昂贵设备损坏的风险。</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">🎯</div>
+                    <h4>一键无缝部署</h4>
+                    <p>供电与视频一根 HDMI 线搞定。宽大出瞳容差设计，让光学对准与共轴联调不再成为工程师的噩梦。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Capabilities & Workflow -->
+        <section class="reveal">
+            <div class="section-header">
+                <h2>闭环验证，从源头掌控全局。</h2>
+            </div>
+
+            <div class="bento-grid">
+                <div class="card col-span-8">
+                    <h3>实时闭环工作流</h3>
+                    <p>测试电脑注入目标图像，模拟器瞬间化为无尽深空的实体靶标。光电设备的回馈数据实时返回终端，构成完美的硬件在环测试生态。</p>
+                    <div class="card-img-wrapper" style="margin-top:20px;">
+                        <img src="assets/images/simulator_workflow.png" alt="闭环工作流概念图" loading="lazy">
+                    </div>
+                </div>
+                
+                <div class="card dark col-span-4" style="justify-content:center;">
+                    <h3 style="margin-bottom:24px;">核心应用领域</h3>
+                    <ul class="spec-list" style="margin-top:0;">
+                        <li class="spec-item" style="border-bottom:none; padding-bottom:12px;">
+                            <span class="spec-value" style="text-align:left;">✈️ 机载光电吊舱视线隔离度评估</span>
+                        </li>
+                        <li class="spec-item" style="border-bottom:none; padding-bottom:12px;">
+                            <span class="spec-value" style="text-align:left;">🚗 ADAS 智能驾驶视觉防抖与识别验证</span>
+                        </li>
+                        <li class="spec-item" style="border-bottom:none; padding-bottom:12px;">
+                            <span class="spec-value" style="text-align:left;">🚀 无人机/制导武器视觉导引头动态追踪</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Design & Blueprint -->
+        <section class="reveal">
+            <div class="bento-grid">
+                <div class="card col-span-12">
+                    <h3>系统工程蓝图与尺寸</h3>
+                    <p>航空级高强度铝合金机身。提供 M3/M4/M5 标准安装孔位，适应各类云台与转台。</p>
+                    <div class="card-img-wrapper">
+                        <img src="assets/images/simulator_dimensions_pro.png" alt="系统工程蓝图" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Specs -->
+        <section class="reveal">
+            <div class="section-header">
+                <h2>不妥协的技术规格</h2>
+            </div>
+            
+            <div class="bento-grid">
+                <div class="card col-span-6">
+                    <h3>光学与显像系统</h3>
+                    <ul class="spec-list">
+                        <li class="spec-item">
+                            <span class="spec-label">光谱覆盖</span>
+                            <span class="spec-value">0.48 ～ 0.8 μm<br><span style="font-size:13px; color:#86868b; font-weight:400;">完美匹配主流 CMOS/CCD 响应曲线</span></span>
+                        </li>
+                        <li class="spec-item">
+                            <span class="spec-label">画面均匀度</span>
+                            <span class="spec-value">≥ 95%<br><span style="font-size:13px; color:#86868b; font-weight:400;">极致光学平整，靶标无边缘暗角与畸变</span></span>
+                        </li>
+                        <li class="spec-item">
+                            <span class="spec-label">色彩与位深</span>
+                            <span class="spec-value">8-bit<br><span style="font-size:13px; color:#86868b; font-weight:400;">支持 24-bit 真彩与单通道 256 阶高动态</span></span>
+                        </li>
+                        <li class="spec-item">
+                            <span class="spec-label">图像解析力</span>
+                            <span class="spec-value">1024 × 768 HD<br><span style="font-size:13px; color:#86868b; font-weight:400;">高帧无损注入</span></span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="card col-span-6">
+                    <h3>物理结构与可靠性</h3>
+                    <ul class="spec-list">
+                        <li class="spec-item">
+                            <span class="spec-label">视场角 (对角线)</span>
+                            <span class="spec-value">≥ 7.4°</span>
+                        </li>
+                        <li class="spec-item">
+                            <span class="spec-label">出瞳口径 / 距离</span>
+                            <span class="spec-value">≥ 30 mm / ≥ 20 mm<br><span style="font-size:13px; color:#86868b; font-weight:400;">超大容差设计，对准共轴极易操作</span></span>
+                        </li>
+                        <li class="spec-item">
+                            <span class="spec-label">连续/无故障工作时间</span>
+                            <span class="spec-value">≥ 8 小时 / MTBF ≥ 600 小时</span>
+                        </li>
+                        <li class="spec-item">
+                            <span class="spec-label">机身重量</span>
+                            <span class="spec-value">≤ 500 g</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Package List & Service -->
+        <section class="reveal">
+            <div class="bento-grid">
+                <div class="card col-span-8">
+                    <h3>产品标准配套</h3>
+                    <ul class="spec-list" style="margin-top:16px;">
+                        <li class="spec-item" style="padding-bottom:12px;">
+                            <span class="spec-label">可见光目标模拟器主机</span>
+                            <span class="spec-value">1 套</span>
+                        </li>
+                        <li class="spec-item" style="padding-bottom:12px;">
+                            <span class="spec-label">HDMI 一体化工装线</span>
+                            <span class="spec-value">1 条</span>
+                        </li>
+                        <li class="spec-item" style="padding-bottom:12px;">
+                            <span class="spec-label">防震便携包装箱及辅件（镜头布/螺钉）</span>
+                            <span class="spec-value">1 套</span>
+                        </li>
+                        <li class="spec-item" style="padding-bottom:12px;">
+                            <span class="spec-label">三脚架测试平台</span>
+                            <span class="spec-value">1 台 (按需选配)</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card dark col-span-4" style="justify-content:center;">
+                    <h3 style="margin-bottom:16px;">无忧品质与服务</h3>
+                    <p style="margin-bottom: 12px; font-size: 15px;">每一台设备出厂前均经过严苛的光学标定与震动测试。</p>
+                    <ul class="spec-list" style="margin-top:0;">
+                        <li class="spec-item" style="border:none; padding-bottom:8px;">
+                            <span class="spec-value" style="text-align:left; font-size: 15px;">✓ 提供定制化共轴工装设计</span>
+                        </li>
+                        <li class="spec-item" style="border:none; padding-bottom:8px;">
+                            <span class="spec-value" style="text-align:left; font-size: 15px;">✓ 原厂 1 对 1 在线支持</span>
+                        </li>
+                        <li class="spec-item" style="border:none; padding-bottom:0;">
+                            <span class="spec-value" style="text-align:left; font-size: 15px;">✓ 1 年原厂质保保障</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <img src="assets/images/logo.png" alt="P³光电 Logo" class="footer-logo"><br>
+        <p>Copyright © 2026 P³光电(PeterPan Photonics). 严谨光学，驱动未来。</p>
+    </footer>
+
+    <script>
+        // Scroll Animation Observer
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, {
+                threshold: 0.15
+            });
+
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>
