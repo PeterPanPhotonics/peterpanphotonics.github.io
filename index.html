@@ -102,6 +102,16 @@
             border-left: 1px solid var(--border-color);
         }
 
+        .nav-contact {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--accent-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
         /* Animations */
         .reveal {
             opacity: 0;
@@ -336,6 +346,30 @@
             margin-bottom: 16px;
         }
 
+        .contact-box {
+            margin-top: 20px;
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+        .contact-item:last-child { margin-bottom: 0; }
+
+        .contact-link {
+            color: #66b2ff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
         /* Footer */
         footer {
             border-top: 1px solid var(--border-color);
@@ -349,6 +383,13 @@
             height: 28px;
             margin-bottom: 12px;
             opacity: 0.85;
+        }
+
+        .footer-contact {
+            margin-top: 10px;
+            font-size: 14px;
+            color: var(--text-main);
+            font-weight: 500;
         }
 
         /* Mobile Adjustments */
@@ -384,6 +425,9 @@
                 <span class="nav-title">P³光电 (PeterPan Photonics)</span>
                 <span class="nav-subtitle">可见光目标模拟器</span>
             </div>
+            <a href="tel:13811458505" class="nav-contact">
+                📞 13811458505
+            </a>
         </div>
     </nav>
 
@@ -544,19 +588,30 @@
                     </ul>
                 </div>
                 <div class="card dark col-span-4" style="justify-content:center;">
-                    <h3 style="margin-bottom:16px;">无忧品质与服务</h3>
+                    <h3 style="margin-bottom:12px;">品质服务与商务咨询</h3>
                     <p style="margin-bottom: 12px; font-size: 15px;">每一台设备出厂前均经过严苛的光学标定与震动测试。</p>
                     <ul class="spec-list" style="margin-top:0;">
-                        <li class="spec-item" style="border:none; padding-bottom:8px;">
-                            <span class="spec-value" style="text-align:left; font-size: 15px;">✓ 提供定制化共轴工装设计</span>
+                        <li class="spec-item" style="border:none; padding-bottom:6px;">
+                            <span class="spec-value" style="text-align:left; font-size: 14px;">✓ 提供定制化共轴工装设计</span>
                         </li>
-                        <li class="spec-item" style="border:none; padding-bottom:8px;">
-                            <span class="spec-value" style="text-align:left; font-size: 15px;">✓ 原厂 1 对 1 在线支持</span>
+                        <li class="spec-item" style="border:none; padding-bottom:6px;">
+                            <span class="spec-value" style="text-align:left; font-size: 14px;">✓ 原厂 1 对 1 在线支持</span>
                         </li>
-                        <li class="spec-item" style="border:none; padding-bottom:0;">
-                            <span class="spec-value" style="text-align:left; font-size: 15px;">✓ 1 年原厂质保保障</span>
+                        <li class="spec-item" style="border:none; padding-bottom:12px;">
+                            <span class="spec-value" style="text-align:left; font-size: 14px;">✓ 1 年原厂质保保障</span>
                         </li>
                     </ul>
+                    
+                    <div class="contact-box">
+                        <div class="contact-item">
+                            <span>📞 联系电话：</span>
+                            <a href="tel:13811458505" class="contact-link">13811458505</a>
+                        </div>
+                        <div class="contact-item">
+                            <span>💬 微信咨询：</span>
+                            <span class="contact-link">13811458505</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -564,7 +619,8 @@
 
     <footer>
         <img src="assets/images/logo.png" alt="P³光电 Logo" class="footer-logo"><br>
-        <p>Copyright © 2026 P³光电(PeterPan Photonics). 严谨光学，驱动未来。</p>
+        <p class="footer-contact">商务与技术咨询（电话 / 微信同号）：<a href="tel:13811458505" style="color:var(--accent-color); text-decoration:none; font-weight:600;">13811458505</a></p>
+        <p style="margin-top:8px;">Copyright © 2026 P³光电(PeterPan Photonics). 严谨光学，驱动未来。</p>
     </footer>
 
     <script>
