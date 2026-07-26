@@ -472,27 +472,28 @@
             </div>
 
             <div class="bento-grid">
-                <div class="card col-span-8">
+                <div class="card col-span-12" style="text-align: center;">
                     <h3>实时闭环工作流</h3>
-                    <p>测试电脑注入目标图像，模拟器瞬间化为无尽深空的实体靶标。光电设备的回馈数据实时返回终端，构成完美的硬件在环测试生态。</p>
-                    <div class="card-img-wrapper" style="margin-top:20px;">
-                        <img src="assets/images/simulator_workflow.png" alt="闭环工作流概念图" loading="lazy">
+                    <p style="max-width: 720px; margin: 0 auto;">测试电脑注入目标图像，模拟器瞬间化为无尽深空的实体靶标。光电设备的回馈数据实时返回终端，构成完美的硬件在环测试生态。</p>
+                    <div class="workflow-img-frame" style="max-width: 860px; margin: 28px auto 0; padding: 16px; background: rgba(250, 250, 252, 0.8); border: 1px solid rgba(0, 0, 0, 0.06); border-radius: 18px; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.8), 0 8px 24px rgba(0,0,0,0.03);">
+                        <img src="assets/images/simulator_workflow.png" alt="闭环工作流概念图" loading="lazy" style="width: 100%; height: auto; border-radius: 10px; display: block;">
                     </div>
                 </div>
-                
-                <div class="card dark col-span-4" style="justify-content:center;">
-                    <h3 style="margin-bottom:24px;">核心应用领域</h3>
-                    <ul class="spec-list" style="margin-top:0;">
-                        <li class="spec-item" style="border-bottom:none; padding-bottom:12px;">
-                            <span class="spec-value" style="text-align:left;">✈️ 机载光电吊舱视线隔离度评估</span>
-                        </li>
-                        <li class="spec-item" style="border-bottom:none; padding-bottom:12px;">
-                            <span class="spec-value" style="text-align:left;">🚗 ADAS 智能驾驶视觉防抖与识别验证</span>
-                        </li>
-                        <li class="spec-item" style="border-bottom:none; padding-bottom:12px;">
-                            <span class="spec-value" style="text-align:left;">🚀 无人机/制导武器视觉导引头动态追踪</span>
-                        </li>
-                    </ul>
+
+                <div class="card col-span-4">
+                    <div style="font-size: 28px; margin-bottom: 12px;">✈️</div>
+                    <h3 style="font-size: 18px; margin-bottom: 8px;">机载光电吊舱</h3>
+                    <p style="font-size: 14px; color: var(--text-secondary); margin: 0;">视线隔离度评估与高精度姿态跟踪闭环测试</p>
+                </div>
+                <div class="card col-span-4">
+                    <div style="font-size: 28px; margin-bottom: 12px;">🚗</div>
+                    <h3 style="font-size: 18px; margin-bottom: 8px;">ADAS 智能驾驶</h3>
+                    <p style="font-size: 14px; color: var(--text-secondary); margin: 0;">车载视觉防抖、复杂路况目标识别与响应验证</p>
+                </div>
+                <div class="card col-span-4">
+                    <div style="font-size: 28px; margin-bottom: 12px;">🚀</div>
+                    <h3 style="font-size: 18px; margin-bottom: 8px;">无人机 / 制导武器</h3>
+                    <p style="font-size: 14px; color: var(--text-secondary); margin: 0;">视觉导引头动态追踪与极速硬件在环（HIL）仿真</p>
                 </div>
             </div>
         </section>
